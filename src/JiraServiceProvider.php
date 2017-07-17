@@ -25,11 +25,10 @@ class JiraServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom( __DIR__ . '/config/jira.php', 'jira' );
+        $this->mergeConfigFrom(__DIR__.'/config/jira.php', 'jira');
 
-        $this->app['jira'] = $this->app->share( function ( $app )
-        {
-            return new Jira;
-        } );
+        $this->app->singleton(Jira::class, function ($app) {
+            return new Client($app['config']['jira']);
+        });
     }
 }
